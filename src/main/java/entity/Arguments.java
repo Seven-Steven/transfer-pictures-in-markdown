@@ -18,7 +18,7 @@ public class Arguments {
   // TODO 确定配置文件名
   private String configFile = "./config";
 
-  @Parameter(names = {"-backupFiles"}, description = "backup MarkDown files before transfer picture")
+  @Parameter(names = {"-backup"}, description = "backup MarkDown files before transfer picture")
   private Boolean backupFiles = true;
 
   @Parameter(names = {"-h", "-help"}, description = "show the help information")
@@ -28,4 +28,43 @@ public class Arguments {
   // TODO 确定字段类型
   private String version;
 
+  public List<String> getParameters() {
+    return parameters;
+  }
+
+  public void setParameters(List<String> parameters) {
+    this.parameters = parameters;
+  }
+
+  public String getConfigFile() {
+    return configFile;
+  }
+
+  public void setConfigFile(String configFile) {
+    this.configFile = configFile;
+  }
+
+  public Boolean getBackupFiles() {
+    return backupFiles;
+  }
+
+  public void setBackupFiles(Boolean backupFiles) {
+    this.backupFiles = backupFiles;
+  }
+
+  public Boolean getHelp() {
+    return help;
+  }
+
+  public void setHelp(Boolean help) {
+    this.help = help;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
 }
