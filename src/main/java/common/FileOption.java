@@ -74,7 +74,7 @@ public class FileOption {
    * @Date: 18-11-22
    **/
   public File[] getFileListByEndString(String endWith) {
-    return this.file.listFiles((dir, name) -> {
+    return file.listFiles((dir, name) -> {
       if (name.endsWith(endWith)) {
         return true;
       } else {
@@ -84,6 +84,6 @@ public class FileOption {
   }
 
   public File[] getFileList(FileFilter fileFilter) {
-    return this.file.listFiles(fileFilter);
+    return file.listFiles(fileFilter);
   }
 }

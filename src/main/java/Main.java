@@ -1,62 +1,57 @@
+import com.beust.jcommander.JCommander;
+import common.NetOption;
+import common.QiNiuOption;
+import entity.Arguments;
 import entity.MarkDownFile;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class Main {
   public static void main(String[] args) {
+    Arguments arguments = new Arguments();
+    JCommander.newBuilder().addObject(arguments).build().parse(args);
+    List<String> parameters = arguments.getParameters();
 
-    try {
-      MarkDownFile md = new MarkDownFile("/home/seven/Downloads/test.md");
-      String[] whiteList = {"18-1-20"};
-      md.pictureUrlFilter(whiteList);
-      int i = 1;
-      for (String s : md.getPictureUrl()) {
-        System.out.println(i++ + "  " + s);
+    QiNiuOption qiNiuOption = new QiNiuOption();
+
+    MarkDownFile md = null;
+    for (String filePath : parameters) {
+      try {
+        md = new MarkDownFile(filePath);
+        md.backup();
+      } catch (IOException e) {
+        System.out.println("markdown 文件路径不合法!");
+        e.printStackTrace();
       }
-      System.out.println("Done");
-      // md.backup();
-      // md.replaceAll("http", "==========================================================");
-      // md.write();
-    } catch (IOException e) {
-      e.printStackTrace();
+
+      // TODO 白名单过滤
+      List<String> pictureUrlList = md.getPictureUrl();
+      int i = 0;
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      String date = dateFormat.format(new Date());
+
+      for (String pictureUrl : pictureUrlList) {
+        String fileName = new SimpleDateFormat("HHmmssSSS").format(new Date());
+        String savePath = "/tmp/markdown/" + date + fileName + ".png";
+        // 抓取网络图片
+        NetOption netOption = new NetOption();
+        try {
+          netOption.downloadImage(pictureUrl, savePath);
+          String qiNiuUrl = qiNiuOption.uploadLocalFile(savePath);
+          md.replaceAll(pictureUrl, qiNiuUrl);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+
+      try {
+        md.write();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
-
-    return;
-
-    // 读取命令行参数
-    // Arguments arguments = new Arguments();
-    // JCommander.newBuilder()
-    //     .addObject(arguments)
-    //     .build()
-    //     .parse(args);
-    // List parameters = arguments.getParameters();
-    // for (Object o : parameters) {
-    //   System.out.println(o);
-    // }
-    //
-    // for (Object parameter : parameters) {
-    //
-    // }
-
-
-    //测试七牛sdk
-    // String accessKey = "ak";
-    // String secretKey = "sk";
-    // String bucket = "bucket";
-    //
-    // Auth auth = Auth.create(accessKey, secretKey);
-    // String upToken = auth.uploadToken(bucket);
-    // // System.out.println(upToken);
-
-    // 测试 FileOption
-    // try {
-    //   FileOption fileOption = new FileOption("./");
-    //   File[] files = fileOption.getFileList();
-    //   for (File file : files) {
-    //     System.out.println(file);
-    //   }
-    // } catch (FileNotFoundException e) {
-    //   e.printStackTrace();
-    // }
   }
 }

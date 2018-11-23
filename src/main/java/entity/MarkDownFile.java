@@ -81,7 +81,8 @@ public class MarkDownFile extends File {
    **/
   public void backup() throws IOException {
     // TODO 备份文件可自定义后缀
-    File backup = new File(getPath() + ".bak");
+    File backup = new File(toPath() + ".bak");
+    System.out.println(backup);
     Files.copy(toPath(), backup.toPath());
   }
 
