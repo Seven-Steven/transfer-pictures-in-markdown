@@ -39,6 +39,7 @@ public class Main {
     // }
 
 
+    //测试七牛sdk
     // String accessKey = "ak";
     // String secretKey = "sk";
     // String bucket = "bucket";
@@ -47,7 +48,7 @@ public class Main {
     // String upToken = auth.uploadToken(bucket);
     // // System.out.println(upToken);
 
-
+    // 测试 FileOption
     // try {
     //   FileOption fileOption = new FileOption("./");
     //   File[] files = fileOption.getFileList();
