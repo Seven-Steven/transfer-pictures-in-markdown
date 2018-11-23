@@ -7,12 +7,20 @@ public class Main {
 
     try {
       MarkDownFile md = new MarkDownFile("/home/seven/Downloads/test.md");
-      md.getContent();
-      md.getPictures();
-      System.out.println(md.getPictureUrl());
+      String[] whiteList = {"18-1-20"};
+      md.pictureUrlFilter(whiteList);
+      int i = 1;
+      for (String s : md.getPictureUrl()) {
+        System.out.println(i++ + "  " + s);
+      }
+      System.out.println("Done");
+      // md.backup();
+      // md.replaceAll("http", "==========================================================");
+      // md.write();
     } catch (IOException e) {
       e.printStackTrace();
     }
+
     return;
 
     // 读取命令行参数
